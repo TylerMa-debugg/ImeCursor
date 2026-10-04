@@ -1,0 +1,5 @@
+# build output and runtime files
+ImeCursor.exe
+ImeCursor.log
+*.zip
+test/
