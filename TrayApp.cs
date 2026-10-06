@@ -539,6 +539,14 @@ namespace ImeCursor
             catch (Exception) { return false; }
         }
 
+        /// <summary>Marks the Run entry as enabled in Settings > Apps > Startup (first byte 2 = enabled, as Task
+        /// Manager writes it). Recent Windows 11 builds do not run a Run entry that has no approval value at all.</summary>
+        private static void MarkStartupApproved()
+        {
+            using (RegistryKey a = Registry.CurrentUser.CreateSubKey(ApprovedKey))
+                a.SetValue(RunValue, new byte[] { 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, RegistryValueKind.Binary);
+        }
+
         private static void ClearStartupApproved()
         {
             using (RegistryKey a = Registry.CurrentUser.OpenSubKey(ApprovedKey, true))
@@ -585,7 +593,7 @@ namespace ImeCursor
                     }
                     using (RegistryKey k = Registry.CurrentUser.CreateSubKey(RunKey))
                         k.SetValue(RunValue, "\"" + exe + "\"", RegistryValueKind.String);
-                    ClearStartupApproved();   // re-enable if it was turned off in Settings > Apps > Startup
+                    MarkStartupApproved();    // Explorer skips Run entries that are not approved (see MarkStartupApproved)
                 }
             }
             catch (Exception ex)

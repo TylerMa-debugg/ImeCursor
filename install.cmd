@@ -1,5 +1,5 @@
 @echo off
-rem Copies ImeCursor to a permanent, user-writable folder and starts it from there.
+rem Copies ImeCursor to a permanent, user-writable folder, enables start with Windows, and starts it.
 rem Usage: install.cmd [target folder]      default: %LOCALAPPDATA%\Programs\ImeCursor
 rem Existing settings (ImeCursor.ini) in the target folder are kept.
 setlocal
@@ -33,8 +33,13 @@ if exist "%DEST%\ImeCursor.ini" (
   if exist "ImeCursor.ini" copy /y "ImeCursor.ini" "%DEST%\" >nul
 )
 echo Installed to "%DEST%".
+rem Start with Windows: the Run value plus an "enabled" entry in Settings > Apps > Startup (StartupApproved).
+rem Recent Windows 11 builds skip Run values that have no StartupApproved entry.
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v ImeCursor /t REG_SZ /d "\"%DEST%\ImeCursor.exe\"" /f >nul
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Explorer\StartupApproved\Run" /v ImeCursor /t REG_BINARY /d 020000000000000000000000 /f >nul
+if errorlevel 1 (echo Could not enable autostart - use the tray menu: Start with Windows.) else (echo ImeCursor will start when you sign in. To turn that off: tray icon ^> Start with Windows.)
 start "" "%DEST%\ImeCursor.exe"
-echo Started. To start it with Windows: right-click the tray icon ^> Start with Windows.
+echo Started.
 call :pause_if_double_clicked
 exit /b 0
 

@@ -21,8 +21,8 @@ Windows SmartScreen may warn about an unsigned download. Choose *More info > Run
 ## Install
 
 1. Optional, only when building from source: run `build.cmd`. It compiles `ImeCursor.exe` with the built-in .NET Framework 4.x `csc.exe`. No SDK or download is needed. Exit a running ImeCursor first, because a running exe cannot be overwritten.
-2. Run `install.cmd`. It copies `ImeCursor.exe`, `ImeCursor.ini` and this README to `%LOCALAPPDATA%\Programs\ImeCursor` and starts the program from there. An existing `ImeCursor.ini` in that folder is kept. You can also copy the files to any other folder you can write to by hand. Do not use `Program Files`, because the settings file and the log are written next to the exe.
-3. To start it at sign-in: right-click the tray icon and choose **Start with Windows**. Do this from the installed copy. ImeCursor warns you if it is running from a temporary folder.
+2. Run `install.cmd`. It copies `ImeCursor.exe`, `ImeCursor.ini` and this README to `%LOCALAPPDATA%\Programs\ImeCursor` enables **Start with Windows**, and starts the program from there. An existing `ImeCursor.ini` in that folder is kept. You can also copy the files to any other folder you can write to by hand. Do not use `Program Files`, because the settings file and the log are written next to the exe.
+3. That's it: ImeCursor now starts every time you sign in. To turn that off, untick **Start with Windows** in the tray menu.
 
 Only one copy runs at a time.
 
@@ -30,7 +30,7 @@ Only one copy runs at a time.
 
 Tray menu:
 - **Show badge**: turns the badge on or off. Double-clicking the tray icon does the same.
-- **Start with Windows**: adds or removes the `ImeCursor` value under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`. If you turned it off in *Settings > Apps > Startup* or Task Manager, it shows as unticked, and ticking it turns it back on.
+- **Start with Windows**: adds or removes the `ImeCursor` value under `HKCU\Software\Microsoft\Windows\CurrentVersion\Run`, and marks it as enabled under `...\Explorer\StartupApproved\Run` (recent Windows 11 builds skip startup entries that are not marked there). If you turned it off in *Settings > Apps > Startup* or Task Manager, it shows as unticked, and ticking it turns it back on.
 - **Open settings**: opens `ImeCursor.ini` in Notepad.
 - **Reload settings**: applies changes made to the INI file. If the file cannot be read, for example because another program has it locked, the current settings stay in effect.
 - **Restart as administrator**: lets the badge read the mode of elevated apps. See Limitations.
